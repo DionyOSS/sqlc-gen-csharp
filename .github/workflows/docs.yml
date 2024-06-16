@@ -1,7 +1,10 @@
-name: Generate Docs
+name: Docs
 defaults:
   run:
     shell: bash
+    
+permissions:
+  contents: write
 
 on:
   push:
