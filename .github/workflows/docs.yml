@@ -1,0 +1,42 @@
+name: Generate Docs
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["add-autogenerate-docs"]
+    
+jobs:
+  generate-and-push-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create docs change PR
+        run: |
+          echo "DATE_STR=$(date '+%Y-%m-%d')" >> $GITHUB_ENV
+          ./scripts/docs/generate_examples.sh docs/Examples.md
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        env:
+          DATE_STR=${{ env.DATE_STR }}
+        with:
+          commit-message: update docs
+          title: update auto-generated docs
+          branch: update-docs
+          branch-suffix: timestamp
+          delete-branch: true
+          
+      - name: Commit and push changes
+        run: |
+          git add docs/examples.md
+          git commit -m "Update examples.md"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -120,10 +120,10 @@ jobs:
           sqlc-version: '1.25.0'
 
       - name: Updating plugin sha
-        run: ./scripts/wasm/update_sha.sh sqlc.ci.yaml
+        run: ./scripts/wasm/update_sha.sh ${SQLC_CI_FILE}
 
       - name: Codegen Test
-        run: ./scripts/run_codegen_test.sh sqlc.ci.yaml \
+        run: ./scripts/tests/run_codegen.sh ${SQLC_CI_FILE} \
           ${{ matrix.file-per-query }} ${{ matrix.generate-csproj }} ${{ matrix.target-framework }}
           
       - uses: actions/setup-dotnet@v4
@@ -148,8 +148,8 @@ jobs:
           
       - name: Verify pushed generated code is synced
         run: |
-          ./scripts/wasm/update_sha.sh sqlc.ci.yaml
-          sqlc -f sqlc.ci.yaml diff
+          ./scripts/wasm/update_sha.sh ${SQLC_CI_FILE}
+          sqlc -f ${SQLC_CI_FILE} diff
         
       - name: Docker compose
         uses: hoverkraft-tech/compose-action@v1.5.1
@@ -164,8 +164,8 @@ jobs:
         with:
           load-mode: strict
           
-      - name: Run tests
-        run: ./scripts/run_end2end_tests.sh
+      - name: End-to-End Tests
+        run: ./scripts/tests/run_end2end.sh
         
   release:
     name: Release
@@ -254,7 +254,6 @@ jobs:
 
           ## Contributors
           * @doron050 @SockworkOrange
-          Anyone who wishes to contribute to the next releases is invited :)
           EOF
           )
 
