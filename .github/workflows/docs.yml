@@ -22,7 +22,8 @@ jobs:
 
       - name: Create docs change PR
         run: |
-          echo "DATE_STR=$(date '+%Y-%m-%d')" >> $GITHUB_ENV
+          date_str=$(date '+%Y-%m-%d')
+          echo "DATE_STR=${date_str}" >> $GITHUB_ENV
           ./scripts/docs/generate_examples.sh docs/Examples.md
 
       - name: Create Pull Request
