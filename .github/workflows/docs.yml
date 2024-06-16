@@ -21,15 +21,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create docs change PR
-        run: |
-          date_str=$(date '+%Y-%m-%d')
-          echo "DATE_STR=${date_str}" >> $GITHUB_ENV
-          ./scripts/docs/generate_examples.sh docs/Examples.md
+        run: ./scripts/docs/generate_examples.sh docs/Examples.md
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
-        env:
-          DATE_STR=${{ env.DATE_STR }}
         with:
           commit-message: update docs
           title: update auto-generated docs
