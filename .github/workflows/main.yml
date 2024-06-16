@@ -146,6 +146,11 @@ jobs:
         with:
           sqlc-version: '1.25.0'
           
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2.3.0
+        with:
+          load-mode: strict
+          
       - name: Verify pushed generated code is synced
         run: |
           ./scripts/wasm/update_sha.sh ${SQLC_CI_FILE}
@@ -158,11 +163,6 @@ jobs:
             mysqldb
             postgresdb
             plugin-tests
-
-      - name: Load .env file
-        uses: xom9ikk/dotenv@v2.3.0
-        with:
-          load-mode: strict
           
       - name: End-to-End Tests
         run: ./scripts/tests/run_end2end.sh
@@ -176,7 +176,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # fetches all history for all tags and branches
+          fetch-depth: 0
           
       - uses: actions/download-artifact@v2
         with:

@@ -10,7 +10,7 @@ on:
   push:
     branches: ["main"]
   pull_request:
-    branches: ["add-autogenerate-docs"]
+    branches: ["*"]
     
 jobs:
   generate-and-push-docs:
