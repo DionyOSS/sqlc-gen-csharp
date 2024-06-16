@@ -32,11 +32,3 @@ jobs:
           branch: update-docs
           branch-suffix: timestamp
           delete-branch: true
-          
-      - name: Commit and push changes
-        run: |
-          git add docs/examples.md
-          git commit -m "Update examples.md"
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
